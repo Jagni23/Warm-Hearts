@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warm Hearts - Login/Register</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Light gray background */
+        }
+        /* Custom message box styling (instead of alert) */
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50; /* Green for success */
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .message-box.error {
+            background-color: #f44336; /* Red for error */
+        }
+        .message-box.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-4xl">
+            <!-- Header Section -->
+            <header class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">Warm Hearts</h1>
+                <p class="text-lg text-gray-600">Connecting your generosity with those in need.</p>
+            </header>
+
+            <!-- Login Section -->
+            <section id="loginSection" class="mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Login to Donate</h2>
+                <form id="loginForm" class="space-y-4 max-w-md mx-auto">
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="loginEmail" name="loginEmail" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="loginPassword" name="loginPassword" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        Login
+                    </button>
+                    <p class="text-center text-gray-600 mt-4">
+                        Don't have an account? <a href="#" id="showRegister" class="text-blue-600 hover:underline">Register here</a>
+                    </p>
+                </form>
+            </section>
+
+            <!-- Register Section (Initially Hidden) -->
+            <section id="registerSection" class="mb-8 hidden">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Create an Account</h2>
+                <form id="registerForm" class="space-y-4 max-w-md mx-auto">
+                    <div>
+                        <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                        <input type="text" id="registerName" name="registerName" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="registerEmail" name="registerEmail" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="registerPassword" name="registerPassword" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required
+                            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                        Register
+                    </button>
+                    <p class="text-center text-gray-600 mt-4">
+                        Already have an account? <a href="#" id="showLogin" class="text-blue-600 hover:underline">Login here</a>
+                    </p>
+                </form>
+            </section>
+
+            <!-- Donation Form Section (Initially Hidden) -->
+            <section id="donationSection" class="hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Donation Form -->
+                    <div class="bg-gray-50 p-6 rounded-lg shadow-inner">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Donate Your Items</h2>
+                        <form id="donationForm" class="space-y-4">
+                            <div>
+                                <label for="donorName" class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                                <input type="text" id="donorName" name="donorName" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <div>
+                                <label for="phoneNumber" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                                <input type="tel" id="phoneNumber" name="phoneNumber" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <div>
+                                <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Your Location (City/Area)</label>
+                                <input type="text" id="location" name="location" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            </div>
+
+                            <div>
+                                <label for="itemCategory" class="block text-sm font-medium text-gray-700 mb-1">Item Category</label>
+                                <select id="itemCategory" name="itemCategory" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="">Select a category</option>
+                                    <option value="clothes">Clothes</option>
+                                    <option value="food">Food (Non-perishable)</option>
+                                    <option value="books">Books</option>
+                                    <option value="electronics">Electronics</option>
+                                    <option value="furniture">Furniture</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="itemDescription" class="block text-sm font-medium text-gray-700 mb-1">Item Description</label>
+                                <textarea id="itemDescription" name="itemDescription" rows="4" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                                    placeholder="e.g., Gently used winter coats, canned goods, children's story books"></textarea>
+                            </div>
+
+                            <div>
+                                <label for="preferredNgo" class="block text-sm font-medium text-gray-700 mb-1">Preferred NGO</label>
+                                <select id="preferredNgo" name="preferredNgo" required
+                                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                    <option value="">Select an NGO</option>
+                                    <option value="hope-foundation">Hope Foundation</option>
+                                    <option value="shelter-for-all">Shelter for All</option>
+                                    <option value="education-first">Education First</option>
+                                    <option value="green-earth-alliance">Green Earth Alliance</option>
+                                    <option value="community-care-network">Community Care Network</option>
+                                </select>
+                            </div>
+
+                            <button type="submit"
+                                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                                Submit Donation
+                            </button>
+                            <button type="button" id="logoutButton"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-md font-medium text-blue-600 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out mt-2">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Pre-defined NGOs Section -->
+                    <div class="bg-blue-50 p-6 rounded-lg shadow-inner">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Our Partner NGOs</h2>
+                        <p class="text-gray-700 mb-4">
+                            We partner with a diverse group of non-governmental organizations dedicated to various causes. You can choose one of them for your donation, or we can help match it with the most suitable one.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="p-4 bg-white rounded-md shadow-sm border border-blue-200">
+                                <h3 class="text-lg font-medium text-blue-800">Hope Foundation</h3>
+                                <p class="text-gray-600 text-sm">Focuses on providing food, shelter, and medical aid to homeless individuals and families.</p>
+                            </li>
+                            <li class="p-4 bg-white rounded-md shadow-sm border border-blue-200">
+                                <h3 class="text-lg font-medium text-blue-800">Shelter for All</h3>
+                                <p class="text-gray-600 text-sm">Dedicated to building safe and sustainable housing for low-income communities.</p>
+                            </li>
+                            <li class="p-4 bg-white rounded-md shadow-sm border border-blue-200">
+                                <h3 class="text-lg font-medium text-blue-800">Education First</h3>
+                                <p class="text-gray-600 text-sm">Supports educational initiatives, providing books, scholarships, and school supplies to underprivileged children.</p>
+                            </li>
+                            <li class="p-4 bg-white rounded-md shadow-sm border border-blue-200">
+                                <h3 class="text-lg font-medium text-blue-800">Green Earth Alliance</h3>
+                                <p class="text-gray-600 text-sm">Works on environmental conservation, tree planting, and promoting sustainable practices.</p>
+                            </li>
+                            <li class="p-4 bg-white rounded-md shadow-sm border border-blue-200">
+                                <h3 class="text-lg font-medium text-blue-800">Community Care Network</h3>
+                                <p class="text-gray-600 text-sm">Aims to strengthen local communities through various outreach programs and support services.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Custom Message Box -->
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        const donationSection = document.getElementById('donationSection');
+        const messageBox = document.getElementById('messageBox');
+
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const donationForm = document.getElementById('donationForm');
+        const logoutButton = document.getElementById('logoutButton');
+
+        const showRegisterLink = document.getElementById('showRegister');
+        const showLoginLink = document.getElementById('showLogin');
+
+        // --- Utility Functions ---
+
+        /**
+         * Displays a custom message box with a given message and type (success/error).
+         * @param {string} message - The message to display.
+         * @param {string} type - 'success' or 'error'.
+         */
+        function showMessage(message, type = 'success') {
+            messageBox.textContent = message;
+            messageBox.classList.remove('success', 'error'); // Clear previous types
+            messageBox.classList.add(type);
+            messageBox.classList.add('show');
+
+            setTimeout(() => {
+                messageBox.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        /**
+         * Switches the visible section of the application.
+         * @param {string} sectionId - The ID of the section to show ('loginSection', 'registerSection', 'donationSection').
+         */
+        function showSection(sectionId) {
+            loginSection.classList.add('hidden');
+            registerSection.classList.add('hidden');
+            donationSection.classList.add('hidden');
+
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        // --- Event Listeners ---
+
+        // Show Register Form
+        showRegisterLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            showSection('registerSection');
+        });
+
+        // Show Login Form
+        showLoginLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            showSection('loginSection');
+        });
+
+        // Handle Login Form Submission
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Simple client-side validation (for demonstration)
+            // In a real application, you would send this to a server for authentication.
+            if (email === 'user@example.com' && password === 'password123') {
+                showMessage('Login successful! Redirecting to donation form.', 'success');
+                setTimeout(() => {
+                    showSection('donationSection');
+                }, 1000); // Wait a bit for message to be seen
+            } else {
+                showMessage('Invalid email or password. Please try again.', 'error');
+            }
+            loginForm.reset(); // Clear form fields
+        });
+
+        // Handle Register Form Submission
+        registerForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!name || !email || !password || !confirmPassword) {
+                showMessage('All fields are required for registration.', 'error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match. Please try again.', 'error');
+                return;
+            }
+
+            // In a real application, you would send this data to a server to create a new user.
+            // For this example, we'll simulate success.
+            console.log('Registration Data:', { name, email, password });
+            showMessage('Registration successful! You can now log in.', 'success');
+            registerForm.reset(); // Clear form fields
+            setTimeout(() => {
+                showSection('loginSection'); // Go back to login after registration
+            }, 1000);
+        });
+
+        // Handle Donation Form Submission
+        donationForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                donorName: document.getElementById('donorName').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                location: document.getElementById('location').value,
+                itemCategory: document.getElementById('itemCategory').value,
+                itemDescription: document.getElementById('itemDescription').value,
+                preferredNgo: document.getElementById('preferredNgo').value
+            };
+
+            console.log('Donation Data:', formData);
+            showMessage('Thank you for your donation! We will contact you shortly.', 'success');
+            this.reset(); // Clear the form fields
+        });
+
+        // Handle Logout Button
+        logoutButton.addEventListener('click', function() {
+            showMessage('You have been logged out.', 'success');
+            setTimeout(() => {
+                showSection('loginSection'); // Go back to login page
+            }, 500);
+        });
+
+        // Initial view: Show login section when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('loginSection');
+        });
+    </script>
+</body>
+</html>
